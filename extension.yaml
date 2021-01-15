@@ -2,16 +2,26 @@ name: ccd-extension-youtube-upload
 version: 0.0.1
 specVersion: v1beta  # Firebase Extensions specification version (do not edit)
 
-displayName: Convert Messages to Upper Case
-description: A simple example of a Firebase Extension
+displayName: CodingCatDev Extension YouTube Upload
+description: >-
+This extension will allow you to upload a video to storage, 
+along with metadata to Firestore.
+It will then take those two items and upload to YouTube. 
+On completion the details of this upload will then be stored
+within Firestore in a sub collection.
 
 license: Apache-2.0  # The license you want for the extension
 
 author:
-  authorName: Your Name
-  url: https://github.com/your_username  # Author URL
+  authorName: Alex Patterson
+  url: https://github.com/CodingCatDev/firebase-extension-youtube-upload
 
 billingRequired: true
+
+roles:
+  - role: datastore.user
+    reason: >-
+      Allows the extension to store video details in Firestore
 
 params:
   - param: LOCATION
@@ -44,6 +54,10 @@ params:
     required: true
     immutable: true
 
-roles:
-  - role: firebasedatabase.admin
-    reason: Allows the extension to write to your Realtime Database instance.
+  - param: YOUTUBE_API_KEY
+    label: YouTube API key with restricted access
+    description: >-
+      You can find more details about creating your 
+      [YouTube API Key](https://developers.google.com/youtube/registering_an_application).
+    example: AIzaSyBH-F7smyRzlmnopL86f4EzKFvsbJdgFnM
+    required: true
