@@ -1,4 +1,4 @@
 export {
-    onVideoPost
+  onVideoMetaCreate
   } from './youtube/youtube';
   

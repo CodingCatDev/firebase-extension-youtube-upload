@@ -61,3 +61,12 @@ params:
       [YouTube API Key](https://developers.google.com/youtube/registering_an_application).
     example: AIzaSyBH-F7smyRzlmnopL86f4EzKFvsbJdgFnM
     required: true
+
+  - param: TRIGGER_COLLECTION
+    label: Firestore collection path
+    description: >-
+      Firestore collection path that triggers on create, this is where the meta data for your video will be held.
+    default: videoMeta
+    validationRegex: "^[^/]+(/[^/]+/[^/]+)*$"
+    validationErrorMessage: Firestore collection paths must be an odd number of segments separated by slashes, e.g. "path/to/collection".
+    required: true
