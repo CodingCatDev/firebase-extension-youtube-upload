@@ -1,14 +1,18 @@
-import { firestore, triggerCollection } from './../config/config';
+import { firestore, triggerCollection, youtubeApiKey} from './../config/config';
 import * as functions from 'firebase-functions';
 import { v4 as uuid } from 'uuid';
 
 export const onVideoMetaCreate = functions.firestore
   .document(`${triggerCollection}/{videoMetaId}`)
   .onCreate(async (snap, context) => {
-    const post = snap.data();
+    if (!youtubeApiKey) {
+      console.log(`youtubeApiKey missing, please add YOUTUBE_API_KEY`);
+      return;
+    }
 
-    if (!post) {
-      console.log('post missing data');
+    const docData = snap.data();
+    if (!docData) {
+      console.log(`docData missing data at ${triggerCollection}`);
       return;
     }
 
