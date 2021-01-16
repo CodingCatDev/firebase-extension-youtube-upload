@@ -11,9 +11,14 @@ description: >-
   within Firestore in a sub collection.
 
 license: Apache-2.0
+
 author:
-  authorName: Alex Patterson
-  url: https://github.com/CodingCatDev/firebase-extension-youtube-upload
+  authorName: CodingCatDev
+  url: https://codingcat.dev
+contributors:
+  - authorName: Alex Patterson
+    url: https://github.com/CodingCatDev/firebase-extension-youtube-upload
+
 billingRequired: true
 
 roles:
@@ -84,6 +89,23 @@ params:
     validationErrorMessage: Firestore collection paths must be an odd number of segments separated by slashes, e.g. "path/to/collection".
 
 resources:
+
+  - name: getAuthURL
+    type: firebaseextensions.v1beta.function
+    description: >-
+      Creates OAuth 2.0 url link for authorization
+    properties:
+      location: ${LOCATION}
+      runtime: nodejs12
+      httpsTrigger: {}
+  - name: createAndSaveTokens
+    type: firebaseextensions.v1beta.function
+    description: >-
+      Takes in an Auth Code. Creates a refresh token and stores that token in TOKEN_COLLECTION
+    properties:
+      location: ${LOCATION}
+      runtime: nodejs12
+      httpsTrigger: {}
   - name: onVideoMetaCreate
     type: firebaseextensions.v1beta.function
     description: >-
