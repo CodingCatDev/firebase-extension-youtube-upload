@@ -15,7 +15,7 @@ const oauth2Client = new google.auth.OAuth2(clientId, clientSecret);
 /**
  * Request a OAuth URL from your credentials
  */
-exports.getAuthURL = functions.https.onCall(async () => {
+export const getAuthURL = functions.https.onCall(async () => {
     const scopes = [
         'profile',
         'email',
@@ -31,7 +31,7 @@ exports.getAuthURL = functions.https.onCall(async () => {
 /**
  * Generate and store OAuth Tokens
  */
-exports.createAndSaveTokens = functions.https.onCall(async (data, context) => {
+export const createAndSaveTokens = functions.https.onCall(async (data, context) => {
     // if (context.auth && context.auth.uid) {
     //     const userRef = admin
     //       .firestore()
