@@ -12,12 +12,15 @@ description: >-
 
 license: Apache-2.0
 
+sourceUrl: https://github.com/CodingCatDev/firebase-extension-youtube-upload
+releaseNotesUrl: https://github.com/CodingCatDev/firebase-extension-youtube-upload/CHANGELOG.md
+
 author:
   authorName: CodingCatDev
   url: https://codingcat.dev
 contributors:
   - authorName: Alex Patterson
-    url: https://github.com/CodingCatDev/firebase-extension-youtube-upload
+    url: https://twitter.com/codingcatdev
 
 billingRequired: true
 
