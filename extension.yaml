@@ -1,21 +1,19 @@
 name: ccd-extension-youtube-upload
 version: 0.0.1
-specVersion: v1beta  # Firebase Extensions specification version (do not edit)
+specVersion: v1beta
 
 displayName: CodingCatDev Extension YouTube Upload
 description: >-
-This extension will allow you to upload a video to storage, 
-along with metadata to Firestore.
-It will then take those two items and upload to YouTube. 
-On completion the details of this upload will then be stored
-within Firestore in a sub collection.
+  This extension will allow you to upload a video to storage, 
+  along with metadata to Firestore.
+  It will then take those two items and upload to YouTube. 
+  On completion the details of this upload will then be stored
+  within Firestore in a sub collection.
 
-license: Apache-2.0  # The license you want for the extension
-
+license: Apache-2.0
 author:
   authorName: Alex Patterson
   url: https://github.com/CodingCatDev/firebase-extension-youtube-upload
-
 billingRequired: true
 
 roles:
@@ -54,19 +52,45 @@ params:
     required: true
     immutable: true
 
-  - param: YOUTUBE_API_KEY
-    label: YouTube API key with restricted access
+  - param: CLIENT_ID
+    label: OAuth 2.0 Client ID
     description: >-
       You can find more details about creating your 
-      [YouTube API Key](https://developers.google.com/youtube/registering_an_application).
-    example: AIzaSyBH-F7smyRzlmnopL86f4EzKFvsbJdgFnM
+      [Credentials](https://developers.google.com/youtube/registering_an_application)
+      [Google API Console](https://console.developers.google.com/apis/credentials)
+    example: 929765314568-ubh2567c8lmnopc10bqenka7q8a0k9tq.apps.googleusercontent.com
     required: true
-
+  - param: CLIENT_SECRET
+    label: OAuth 2.0 Client Secret
+    description: >-
+      You can find more details about creating your 
+      [Credentials](https://developers.google.com/youtube/registering_an_application)
+      [Google API Console](https://console.developers.google.com/apis/credentials)
+    example: TFIhzlelmnop-bJqKrkPODha
+    required: true
+  - param: TOKEN_COLLECTION
+    label: Firestore collection path
+    description: >-
+      Firestore collection path that holds user OAuth Tokens
+    default: tokens
+    validationRegex: "^[^/]+(/[^/]+/[^/]+)*$"
+    validationErrorMessage: Firestore collection paths must be an odd number of segments separated by slashes, e.g. "path/to/collection".
   - param: TRIGGER_COLLECTION
     label: Firestore collection path
     description: >-
       Firestore collection path that triggers on create, this is where the meta data for your video will be held.
-    default: videoMeta
+    default: videoMetas
     validationRegex: "^[^/]+(/[^/]+/[^/]+)*$"
     validationErrorMessage: Firestore collection paths must be an odd number of segments separated by slashes, e.g. "path/to/collection".
-    required: true
+
+resources:
+  - name: onVideoMetaCreate
+    type: firebaseextensions.v1beta.function
+    description: >-
+      Uploads video to YouTube and adds metadata, storing results
+    properties:
+      location: ${LOCATION}
+      runtime: nodejs12
+      eventTrigger:
+        eventType: providers/cloud.firestore/eventTypes/document.create
+        resource: projects/${PROJECT_ID}/databases/(default)/documents/${TRIGGER_COLLECTION}/{videoMetaId}
