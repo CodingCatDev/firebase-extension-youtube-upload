@@ -6,7 +6,7 @@
     "serve": "npm run build && firebase emulators:start --only functions",
     "shell": "npm run build && firebase functions:shell",
     "debug": "npm run build && firebase emulators:start --only functions,firestore --inspect-functions --export-on-exit=./backup/data/emulator --import=./backup/data/emulator",
-    "alex": "npm run build && cross-env TRIGGER_COLLECTION=alex YOUTUBE_API_KEY=alex firebase emulators:start --only functions,firestore --inspect-functions --export-on-exit=./backup/data/emulator --import=./backup/data/emulator",
+    "ext": "npm run build && firebase ext:dev:emulators:start --test-params=test.env --project=ccd-extension-youtube-upload --only functions,firestore --inspect-functions --export-on-exit=./backup/data/emulator --import=./backup/data/emulator",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log"
