@@ -80,7 +80,7 @@ params:
     label: Firestore collection path
     description: >-
       Firestore collection path that holds user OAuth Tokens
-    default: tokens
+    default: youtubeApiTokens
     validationRegex: "^[^/]+(/[^/]+/[^/]+)*$"
     validationErrorMessage: Firestore collection paths must be an odd number of segments separated by slashes, e.g. "path/to/collection".
   - param: TRIGGER_COLLECTION
