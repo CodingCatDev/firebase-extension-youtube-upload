@@ -3,19 +3,24 @@ import { HttpsError } from 'firebase-functions/lib/providers/https';
 import { google } from 'googleapis';
 import { clientId, clientSecret, firestore, tokenCollection } from './../config/config';
 
-if (!clientId) {
-    console.log(`clientId missing, please add CLIENT_ID to your Configuration`);
-}
-
-if (!clientSecret) {
-    console.log(`clientSecret missing, please add CLIENT_SECRET to your Configuration`);
-}
-const oauth2Client = new google.auth.OAuth2(clientId, clientSecret);
-
 /**
  * Request a OAuth URL from your credentials
  */
-export const getAuthURL = functions.https.onCall(async () => {
+export const getAuthURL = functions.https.onCall(async (data) => {
+    const redirectUri = data.redirectUri;
+
+    if (!clientId) {
+        console.log(`clientId missing, please add CLIENT_ID to your Configuration`);
+    }
+    
+    if (!clientSecret) {
+        console.log(`clientSecret missing, please add CLIENT_SECRET to your Configuration`);
+    }
+
+    if(!redirectUri){
+        throw new HttpsError("invalid-argument", "Request missing redirectUri."); 
+    }
+    const oauth2Client = new google.auth.OAuth2(clientId, clientSecret, redirectUri);
     const scopes = [
         'profile',
         'email',
@@ -32,6 +37,8 @@ export const getAuthURL = functions.https.onCall(async () => {
  * Generate and store OAuth Tokens
  */
 export const createAndSaveTokens = functions.https.onCall(async (data, context) => {
+    const code = data.code;
+    const redirectUri = data.redirectUri;
     // if (context.auth && context.auth.uid) {
     //     const userRef = admin
     //       .firestore()
@@ -53,14 +60,30 @@ export const createAndSaveTokens = functions.https.onCall(async (data, context) 
         throw new HttpsError("unauthenticated", "Request had invalid credentials."); 
     }
 
-    if(!data.code){
+    if(!code){
         throw new HttpsError("invalid-argument", "Request missing code."); 
     }
 
-    const code = data.code;
+    if(!redirectUri){
+        throw new HttpsError("invalid-argument", "Request missing redirectUri."); 
+    }
+
+    if (!clientId) {
+        console.log(`clientId missing, please add CLIENT_ID to your Configuration`);
+    }
+    
+    if (!clientSecret) {
+        console.log(`clientSecret missing, please add CLIENT_SECRET to your Configuration`);
+    }
+    const oauth2Client = new google.auth.OAuth2(clientId, clientSecret, redirectUri);
+
+    try{
     const { tokens } = await oauth2Client.getToken(code);
     const { refresh_token } = tokens;
     // Save to database
-    await firestore.doc(`${tokenCollection}/${context.auth.uid}`).set({ refresh_token })
+    await firestore.doc(`${tokenCollection}/${context.auth.uid}`).set({ refresh_token });
     return 'success';
+    }catch(e){
+        throw new HttpsError('internal', `${JSON.stringify(e)}`);
+    }
 });
