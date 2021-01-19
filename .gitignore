@@ -67,3 +67,6 @@ backup/*
 
 # dotenv environment variables file
 *.env
+
+# Don't store serviceAccountKey in public repo
+serviceAccountKey.json
