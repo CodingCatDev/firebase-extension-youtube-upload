@@ -107,7 +107,8 @@ resources:
     type: firebaseextensions.v1beta.function
     description: >-
       Takes in storage location document, from Firebase storage and uploads to YouTube file and 
-      Storing results in MEDIA_COLLECTION, referencing UPLOAD_COLLECTION id.
+      Storing results in a http provided path. This is a secure request requiring the user
+      to already have obtained their YouTube token and stored it in TOKEN_COLLECTION.
     properties:
       location: ${LOCATION}
       runtime: nodejs12
