@@ -1,7 +1,7 @@
 import { firestore, storage, tokenCollection } from './../config/config';
 import * as functions from 'firebase-functions';
 import { v4 as uuid } from 'uuid';
-import { Video } from './video.model';
+import { Video } from '../models/video.model';
 import { HttpsError } from 'firebase-functions/lib/providers/https';
 
 enum PublishStatus {
