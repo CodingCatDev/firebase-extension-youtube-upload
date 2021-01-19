@@ -1,0 +1,20 @@
+{
+  "name": "ccd-extension-youtube-upload",
+  "version": "0.0.1",
+  "description": "Firebase Extension for Uploading Firebase Storage Videos to YouTube.",
+  "main": "functions/lib/index.js",
+  "scripts": {
+    "debug": "npm run --prefix ./functions build && firebase emulators:start --only functions,firestore --inspect-functions --export-on-exit=./backup/data/emulator --import=./backup/data/emulator",
+    "ext": "npm run --prefix ./functions build && firebase ext:dev:emulators:start --test-params=test.env --project=ccd-extension-youtube-upload --inspect-functions --export-on-exit=./backup/data/emulator --import=./backup/data/emulator"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CodingCatDev/firebase-extension-youtube-upload.git"
+  },
+  "author": "Alex Patterson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CodingCatDev/firebase-extension-youtube-upload/issues"
+  },
+  "homepage": "https://github.com/CodingCatDev/firebase-extension-youtube-upload#readme"
+}

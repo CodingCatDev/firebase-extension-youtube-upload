@@ -10,10 +10,3 @@ typings/
 
 # Node.js dependency directory
 node_modules/
-
-backup/*
-
-!backup/data/.gitkeep
-
-# dotenv environment variables file
-.env

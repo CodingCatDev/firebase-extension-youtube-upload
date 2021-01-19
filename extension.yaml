@@ -80,14 +80,8 @@ params:
     label: Firestore collection path
     description: >-
       Firestore collection path that holds user OAuth Tokens
-    default: youtubeApiTokens
-    validationRegex: "^[^/]+(/[^/]+/[^/]+)*$"
-    validationErrorMessage: Firestore collection paths must be an odd number of segments separated by slashes, e.g. "path/to/collection".
-  - param: TRIGGER_COLLECTION
-    label: Firestore collection path
-    description: >-
-      Firestore collection path that triggers on create, this is where the meta data for your video will be held.
-    default: videoMetas
+    example: youtubeApiTokens
+    required: true
     validationRegex: "^[^/]+(/[^/]+/[^/]+)*$"
     validationErrorMessage: Firestore collection paths must be an odd number of segments separated by slashes, e.g. "path/to/collection".
 
@@ -109,13 +103,12 @@ resources:
       location: ${LOCATION}
       runtime: nodejs12
       httpsTrigger: {}
-  - name: onVideoMetaCreate
+  - name: onPublish
     type: firebaseextensions.v1beta.function
     description: >-
-      Uploads video to YouTube and adds metadata, storing results
+      Takes in storage location document, from Firebase storage and uploads to YouTube file and 
+      Storing results in MEDIA_COLLECTION, referencing UPLOAD_COLLECTION id.
     properties:
       location: ${LOCATION}
       runtime: nodejs12
-      eventTrigger:
-        eventType: providers/cloud.firestore/eventTypes/document.create
-        resource: projects/${PROJECT_ID}/databases/(default)/documents/${TRIGGER_COLLECTION}/{videoMetaId}
+      httpsTrigger: {}

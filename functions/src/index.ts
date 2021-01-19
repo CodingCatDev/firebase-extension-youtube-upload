@@ -1,5 +1,5 @@
 export {
-  onVideoMetaCreate
+  onPublish
   } from './youtube/youtube';
   export {
     getAuthURL,

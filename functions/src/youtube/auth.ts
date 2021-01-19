@@ -39,6 +39,11 @@ export const getAuthURL = functions.https.onCall(async (data) => {
 export const createAndSaveTokens = functions.https.onCall(async (data, context) => {
     const code = data.code;
     const redirectUri = data.redirectUri;
+
+    if(!context.auth || !context.auth.uid){
+        throw new HttpsError("unauthenticated", "Request had invalid credentials."); 
+    }
+
     // if (context.auth && context.auth.uid) {
     //     const userRef = admin
     //       .firestore()
@@ -55,10 +60,6 @@ export const createAndSaveTokens = functions.https.onCall(async (data, context) 
     //       );
     //     }
     //   }
-
-    if(!context.auth || !context.auth.uid){
-        throw new HttpsError("unauthenticated", "Request had invalid credentials."); 
-    }
 
     if(!code){
         throw new HttpsError("invalid-argument", "Request missing code."); 
@@ -79,9 +80,8 @@ export const createAndSaveTokens = functions.https.onCall(async (data, context) 
 
     try{
     const { tokens } = await oauth2Client.getToken(code);
-    const { refresh_token } = tokens;
     // Save to database
-    await firestore.doc(`${tokenCollection}/${context.auth.uid}`).set({ refresh_token });
+    await firestore.doc(`${tokenCollection}/${context.auth.uid}`).set(tokens);
     return 'success';
     }catch(e){
         throw new HttpsError('internal', `${JSON.stringify(e)}`);
